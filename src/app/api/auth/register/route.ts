@@ -1,5 +1,5 @@
-import { createUser } from '@/lib/actions/users';
-import { getUserByEmail } from '@/lib/data/users';
+import { createUser } from '@/lib/services/user.service';
+import prisma from '@/lib/prisma';
 import { exclude } from '@/lib/utils';
 import { NextResponse } from 'next/server';
 import * as z from 'zod';
@@ -10,7 +10,11 @@ export async function POST(request: Request) {
     const schema = z.object({
         name: z.string().min(2, 'Name is too short.'),
         email: z.string().email().refine(async (email: string) => {
-            const user = await getUserByEmail(email);
+            const user = await prisma.user.findUnique({
+                where: {
+                    email,
+                },
+            });
             return !user; // Returns true if user is undefined, false otherwise
         }, 'Email already exists.'),
         password: z.string().min(6, 'Password is too short.').max(16, 'Password is too long.'),
