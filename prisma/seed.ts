@@ -8,7 +8,7 @@ async function main() {
     // initial users
     await db.user.upsert({
         where: { email: 'admin@example.com' },
-        update: {},
+        update: {}, // this makes upsert work as findOrCreate
         create: {
             email: 'admin@example.com',
             password: await bcrypt.hash('admin123', 10),
@@ -18,7 +18,7 @@ async function main() {
 
     await db.user.upsert({
         where: { email: 'user@example.com' },
-        update: {},
+        update: {},  // this makes upsert work as findOrCreate
         create: {
             email: 'user@example.com',
             password: await bcrypt.hash('user123', 10),
