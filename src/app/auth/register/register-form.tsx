@@ -31,9 +31,6 @@ export default function RegisterForm() {
                 password: data.password,
                 callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/app`
             });
-
-            // Todo: show toast: Account created! Redirecting to login...
-
         } else {
             const { fieldErrors, formErrors } = await res.json();
 
